@@ -1,0 +1,44 @@
+:root { --bg:#0b0b0c; --card:#141416; --text:#e8e8ea; --muted:#a0a0a6; --accent:#7dd3fc; --danger:#ef4444; --ok:#22c55e; --stroke:#232327; }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.55}
+.container{max-width:960px;margin:24px auto;padding:0 16px}
+h1{font-size:28px;margin:8px 0 0} h2{margin-top:0} h3{margin:0 0 8px}
+.subtle{color:var(--muted);margin-top:6px} .small{font-size:14px;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--stroke);border-radius:12px;padding:16px;margin-bottom:16px}
+.row{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
+.row label{display:block;font-size:14px;color:var(--muted);margin-bottom:4px}
+/* Bigger inputs */
+input, select, button {
+  padding: 14px 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--stroke);
+  background: #0e0e10;
+  color: var(--text);
+  outline: none;
+  width: 100%;
+}
+
+/* Wider cards */
+.slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); /* try 460px if you want even wider */
+  gap: 12px;
+}
+
+.slot {
+  border: 1px solid var(--stroke);
+  border-radius: 10px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 110px 1fr;  /* time + stacked fields */
+  gap: 10px;
+  align-items: start;
+  background: #0f0f12;
+}
+
+.slot-time { font-weight: 600; margin-top: 6px; }
+.slot-fields { display: grid; gap: 8px; }
+.flash{padding:10px 12px;border-radius:10px;margin-bottom:12px} .flash.error{background:#2a1214;border:1px solid #3f1a1d;color:#fda4af} .flash.message{background:#102617;border:1px solid #20492e;color:#86efac}
+.details{list-style:none;padding:0} .details li{margin:6px 0} a.btn{display:inline-block;margin-top:8px}
+.align-end{display:flex;align-items:flex-end}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+  <section class="card">
+    <h2>Manage your booking</h2>
+    {% if booking.status != 'confirmed' %}
+      <p class="flash error">Status: {{ booking.status|capitalize }} — this booking can no longer be changed.</p>
+    {% endif %}
+    <ul class="details">
+      <li><strong>Name:</strong> {{ booking.name }}</li>
+      <li><strong>Email:</strong> {{ booking.email }}</li>
+      <li><strong>Phone:</strong> {{ booking.phone }}</li>
+      <li><strong>When:</strong>
+        {{ start_local.strftime("%A, %B %d, %Y") }} •
+        {% if os.name == 'nt' %}
+          {{ start_local.strftime("%I:%M %p").lstrip('0') }}
+        {% else %}
+          {{ start_local.strftime("%-I:%M %p") }}
+        {% endif %}
+        –
+        {% if os.name == 'nt' %}
+          {{ end_local.strftime("%I:%M %p").lstrip('0') }}
+        {% else %}
+          {{ end_local.strftime("%-I:%M %p") }}
+        {% endif %}
+        ({{ timezone }})
+      </li>
+      <li><strong>Status:</strong> {{ booking.status|capitalize }}</li>
+    </ul>
+    {% if booking.status == 'confirmed' %}
+      <div class="row">
+        <form method="get" action="{{ url_for('reschedule', token=booking.manage_token) }}">
+          <button type="submit">Reschedule</button>
+        </form>
+        <form method="post" action="{{ url_for('cancel', token=booking.manage_token) }}" onsubmit="return confirm('Cancel this session?');">
+          <button type="submit">Cancel</button>
+        </form>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

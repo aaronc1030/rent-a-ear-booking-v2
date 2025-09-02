@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+  <section class="card">
+    <h2>Booking confirmed 🎉</h2>
+    <p><strong>{{ booking.name }}</strong>, your session is booked.</p>
+    <ul class="details">
+      <li><strong>When:</strong>
+        {{ start_local.strftime("%A, %B %d, %Y") }} •
+        {% if os.name == 'nt' %}
+          {{ start_local.strftime("%I:%M %p").lstrip('0') }}
+        {% else %}
+          {{ start_local.strftime("%-I:%M %p") }}
+        {% endif %}
+        –
+        {% if os.name == 'nt' %}
+          {{ end_local.strftime("%I:%M %p").lstrip('0') }}
+        {% else %}
+          {{ end_local.strftime("%-I:%M %p") }}
+        {% endif %}
+        ({{ timezone }})
+      </li>
+      <li><strong>Add to Calendar:</strong> <a href="{{ url_for('ics', booking_id=booking.id) }}">Download .ics</a></li>
+      <li><strong>Manage:</strong> <a href="{{ manage_url }}">Reschedule / Cancel</a></li>
+      <li><strong>Booking ID:</strong> {{ booking.id }}</li>
+    </ul>
+    <p><a class="btn" href="{{ url_for('home') }}">Back to calendar</a></p>
+  </section>
+{% endblock %}

@@ -1,0 +1,7 @@
+flask==3.0.3
+sqlalchemy==2.0.32
+python-dotenv==1.0.1
+email-validator==2.1.1
+requests==2.32.3
+phonenumbers==8.13.45
+gunicorn>=21.2.0

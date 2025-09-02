@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+  <section class="card">
+    <h2>Pick a new time (60‑min)</h2>
+    <form method="get" class="row" action="{{ url_for('reschedule', token=booking.manage_token) }}">
+      <div>
+        <label for="start">Start date</label>
+        <input type="date" id="start" name="start" value="{{ start_date }}">
+      </div>
+      <div class="align-end">
+        <button type="submit">Refresh</button>
+      </div>
+    </form>
+  </section>
+
+  {% if not slots %}
+    <p>No availability found in the next {{ days_ahead }} days.</p>
+  {% else %}
+    {% for date_str, day_slots in slots.items() %}
+      <section class="card">
+        <h3>{{ date_str }}</h3>
+        <div class="slots">
+          {% for start_local, end_local in day_slots %}
+            <form method="post" action="{{ url_for('reschedule_post', token=booking.manage_token) }}" class="slot">
+              <input type="hidden" name="slot_start_iso" value="{{ start_local.isoformat()[:16] }}">
+              <input type="hidden" name="slot_end_iso" value="{{ end_local.isoformat()[:16] }}">
+              <div class="slot-time">
+                {% if os.name == 'nt' %}
+                  {{ start_local.strftime("%I:%M %p").lstrip('0') }}
+                {% else %}
+                  {{ start_local.strftime("%-I:%M %p") }}
+                {% endif %}
+              </div>
+              <div class="slot-fields"></div>
+              <button type="submit">Choose</button>
+            </form>
+          {% endfor %}
+        </div>
+      </section>
+    {% endfor %}
+  {% endif %}
+{% endblock %}
