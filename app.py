@@ -82,12 +82,17 @@ def ensure_aware_utc(dt: datetime) -> datetime:
     return dt.astimezone(timezone.utc)
 
 
-def overlaps(a_start: datetime, a_end: datetime, b_start: datetime, b_end: datetime) -> bool:
-    """Safe compare even if older rows were naive (normalize to UTC)."""
-    a_start = ensure_aware_utc(a_start)
-    a_end   = ensure_aware_utc(a_end)
-    b_start = ensure_aware_utc(b_start)
-    b_end   = ensure_aware_utc(b_end)
+def overlaps(a_start, a_end, b_start, b_end):
+    # Normalize all datetimes to be timezone-aware UTC
+    if a_start.tzinfo is None:
+        a_start = a_start.replace(tzinfo=timezone.utc)
+    if a_end.tzinfo is None:
+        a_end = a_end.replace(tzinfo=timezone.utc)
+    if b_start.tzinfo is None:
+        b_start = b_start.replace(tzinfo=timezone.utc)
+    if b_end.tzinfo is None:
+        b_end = b_end.replace(tzinfo=timezone.utc)
+
     return a_start < b_end and a_end > b_start
 
 
