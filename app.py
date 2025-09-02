@@ -136,7 +136,16 @@ def book_post():
     tz=ZoneInfo(settings.TIMEZONE)
     try: start_local=datetime.fromisoformat(slot_start_iso).replace(tzinfo=tz); end_local=datetime.fromisoformat(slot_end_iso).replace(tzinfo=tz)
     except Exception: flash("Invalid slot time.","error"); return redirect(url_for("home"))
-    start_utc=start_local.astimezone(ZoneInfo("UTC")); end_utc=end_local.astimezone(ZoneInfo("UTC"))
+from datetime import timezone
+
+b = Booking(
+    name=request.form["name"],
+    email=request.form["email"],
+    phone=request.form["phone"],
+    start_utc=start.astimezone(timezone.utc),
+    end_utc=end.astimezone(timezone.utc),
+    ...
+)
     with SessionLocal() as s:
         conflict = s.query(Booking).filter(Booking.status=="confirmed").filter(Booking.start_utc<end_utc, Booking.end_utc>start_utc).first()
         if conflict: flash("Sorry, that slot was just taken. Please choose another.","error"); return redirect(url_for("home"))
@@ -207,7 +216,16 @@ def reschedule_post(token):
         start_utc=start_local.astimezone(ZoneInfo("UTC")); end_utc=end_local.astimezone(ZoneInfo("UTC"))
         conflict=s.query(Booking).filter(Booking.id!=b.id).filter(Booking.status=="confirmed").filter(Booking.start_utc<end_utc, Booking.end_utc>start_utc).first()
         if conflict: flash("Sorry, that slot was just taken. Choose another.","error"); return redirect(url_for("reschedule", token=token))
-        b.start_utc=start_utc; b.end_utc=end_utc; s.commit()
+from datetime import timezone
+
+b = Booking(
+    name=request.form["name"],
+    email=request.form["email"],
+    phone=request.form["phone"],
+    start_utc=start.astimezone(timezone.utc),
+    end_utc=end.astimezone(timezone.utc),
+    ...
+)
         start_local=fmt_local(b.start_utc); end_local=fmt_local(b.end_utc)
         manage_url=f"{settings.PUBLIC_BASE_URL}/manage/{b.manage_token}"; ics_url=f"{settings.PUBLIC_BASE_URL}/ics/{b.id}.ics"
         subj="Your Rent a Ear session was rescheduled"
